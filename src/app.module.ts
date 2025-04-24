@@ -3,6 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import config from './config';
+import { TransfromInterceptor } from './common/interceptors/transfrom/transfrom.interceptor';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { GlobalExceptionFilter } from './common/filters/global-exception/global-exception.filter';
 
 @Module({
   imports: [
@@ -13,6 +16,10 @@ import config from './config';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    { provide: APP_FILTER, useClass: GlobalExceptionFilter },
+    AppService,
+    { provide: APP_INTERCEPTOR, useClass: TransfromInterceptor },
+  ],
 })
 export class AppModule {}
