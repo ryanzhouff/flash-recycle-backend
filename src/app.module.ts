@@ -6,6 +6,7 @@ import config from './config';
 import { TransfromInterceptor } from './common/interceptors/transfrom/transfrom.interceptor';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { GlobalExceptionFilter } from './common/filters/global-exception/global-exception.filter';
+//import { GracefulShutdownService } from './graceful-shutdown/graceful-shutdown.service';
 
 @Module({
   imports: [

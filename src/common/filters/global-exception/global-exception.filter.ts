@@ -8,6 +8,10 @@ import { Request, Response } from 'express';
 export class GlobalExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(GlobalExceptionFilter.name);
 
+  constructor() {
+    this.registerUnhandledExceptions();
+  }
+
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest<Request>();
@@ -30,6 +34,17 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       message,
       data: null,
       path: request.originalUrl,
+    });
+  }
+
+  registerUnhandledExceptions() {
+    process.on('uncaughtException', err => {
+      console.log('未捕获异常: ', err);
+      process.exit(1);
+    });
+
+    process.on('unhandledRejection', (reason, promise) => {
+      console.log('unhandled promise: ', promise, 'reason: ', reason);
     });
   }
 }
