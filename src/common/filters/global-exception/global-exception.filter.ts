@@ -33,7 +33,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       code: status,
       message,
       data: null,
-      path: request.originalUrl,
+      path: decodeURIComponent(request.originalUrl),
     });
   }
 
