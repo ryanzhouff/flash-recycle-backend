@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module, OnApplicationShutdown } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -23,4 +23,14 @@ import { GlobalExceptionFilter } from './common/filters/global-exception/global-
     { provide: APP_INTERCEPTOR, useClass: TransfromInterceptor },
   ],
 })
-export class AppModule {}
+export class AppModule implements OnApplicationShutdown {
+  private readonly logger = new Logger(AppModule.name);
+
+  onApplicationShutdown(signal?: string) {
+    if (signal) {
+      this.logger.log(`\nReceived shut down signal ${signal}`);
+    } else {
+      this.logger.log(`\nApplication shut down`);
+    }
+  }
+}
